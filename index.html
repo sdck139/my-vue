@@ -4,26 +4,31 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <script src="./observe.js"></script>
-  <script src="./my-vue.js"></script>
+  <script type=text/javascript src=./dist/vue.js></script>
   <title>vue demo</title>
 </head>
 <body>
   <div id="app">
-    <button onclick="test()">按这个变</button>
-    {{message}}
+    <input type="text" v-model="message">
+    {{date}}
+    <div>{{date}}</div>
   </div>
-</body>
-<script>
-  const vm = new Vue({
-    data: {
-      message: 'hello'
-    }
-  })
-  console.log(vm.data)
-  function test() {
-    vm.data.message = 'no'
+  <script>
+    const vm = new Vue({
+      $el: '#app',
+      data: {
+        message: 'hello',
+        date: new Date().toLocaleString()
+      }
+    })
     console.log(vm.data)
-  }
-</script>
+    setInterval(() => {
+      vm.data.date = new Date().toLocaleString()
+    }, 1000)
+    const test = function () {
+      vm.data.message = 'no'
+      console.log(vm.data)
+    }
+  </script>
+</body>
 </html>

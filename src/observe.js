@@ -1,4 +1,6 @@
-const Observe = function(data) {
+const Dep = require('./watcher').Dep
+
+const observe = function(data) {
   if (!isObject(data)) return
   Object.keys(data).forEach(function(key) {
     define(data, key, data[key])
@@ -10,16 +12,20 @@ function isObject(data) {
 }
 
 function define(data, key, val) {
-  Observe(val)
+  observe(val)
+  var dep = new Dep()
   Object.defineProperty(data, key, {
     enumerable: true,
     configurable: false,
     get: function() {
+      if (Dep.target) dep.addSub(Dep.target)
       return val
     },
     set: function(newVal) {
-      alert('变化：' + val + '->' + newVal)
       val = newVal
+      dep.notify()
     }
   })
 }
+
+module.exports = observe
