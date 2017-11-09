@@ -13,7 +13,7 @@ function isObject(data) {
 
 function define(data, key, val) {
   observe(val)
-  var dep = new Dep()
+  const dep = new Dep()
   Object.defineProperty(data, key, {
     enumerable: true,
     configurable: false,
