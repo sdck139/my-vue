@@ -1,3 +1,9 @@
+/*
+*
+* 为data内数据设置set和get钩子，并执行相应方法进行数据绑定
+*
+*/
+
 const Dep = require('./watcher').Dep
 
 const observe = function(data) {

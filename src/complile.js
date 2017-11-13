@@ -1,7 +1,8 @@
 const Watcher = require('./watcher').Watcher
 
-function Compiler(el, data) {
-  this.$data = data
+function Compiler(el, vm) {
+  this.$data = vm.$data
+  this.$methods = vm.$methods
   this.init(el)
 }
 
@@ -52,19 +53,23 @@ Compiler.prototype = {
   },
   compileUtils: function(el, attr) {
     const self = this
-    let utils = {
+    let directives = {
       'v-model': function(el, name, value) {
         el.addEventListener('input', function (e) {
           //给对应的data属性赋值，并触发该属性的set函数
           self.$data[value] = e.target.value
         })
         el.value = self.$data[value]
+      },
+      '@click': function(el, name, value) {
+        el.addEventListener('click', function(e) {
+          console.log(value)
+        })
       }
-      
     }
     const name = attr.nodeName
     const value = attr.nodeValue
-    if (Object.keys(utils).indexOf(name) > -1) utils[name](el, name, value)
+    if (Object.keys(directives).indexOf(name) > -1) directives[name](el, name, value)
   }
 }
 
