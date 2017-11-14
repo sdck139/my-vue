@@ -5,3 +5,4 @@ const Methods = function(methods) {
 }
 
 module.exports = Methods
+

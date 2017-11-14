@@ -3,6 +3,7 @@ const Watcher = require('./watcher').Watcher
 function Compiler(el, vm) {
   this.$data = vm.$data
   this.$methods = vm.$methods
+  this.$vue = vm
   this.init(el)
 }
 
@@ -64,6 +65,17 @@ Compiler.prototype = {
       '@click': function(el, name, value) {
         el.addEventListener('click', function(e) {
           console.log(value)
+          const reg = /([A-z]+)\(([A-z_,'\s0-9]*)\)|([A-z]+)/
+          const result = value.match(reg)
+          const methodName = result[1]
+          const args = result[2].split(',')
+          for (let i in args) {
+            args[i] = args[i].trim().replace(/'/g, '"')
+            args[i] = JSON.parse(args[i])
+          }
+          console.log(args)
+          console.log(self)
+          self.$methods[methodName].call(self.$vue, ...args)
         })
       }
     }

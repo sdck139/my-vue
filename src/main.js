@@ -5,12 +5,13 @@ const _ = require('lodash')
 const Vue = function(option) {
   // this = option.data
   // this = _.assign(this, option.data)
-  console.log(this)
-  this.$data = option.data
-  for (key in this.$data) {
-    this[key] = this.$data[key]
+  for (key in option.data) {
+    this[key] = option.data[key]
   }
+  console.log(this)
+  console.log(typeof this)
   Observe(this)
+  this.$data = option.data
   // Methods(option.methods)
   this.$methods = option.methods
   new Compile(option.$el, this)
