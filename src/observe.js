@@ -5,16 +5,13 @@
 */
 
 const Dep = require('./watcher').Dep
+const _ = require('./util')
 
 const observe = function(data) {
-  if (!isObject(data)) return
+  if (!_.isObject(data)) return
   Object.keys(data).forEach(function(key) {
     define(data, key, data[key])
   })
-}
-
-function isObject(data) {
-  return data !== null && typeof data == 'object'
 }
 
 function define(data, key, val) {

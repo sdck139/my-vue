@@ -1,7 +1,6 @@
 const Watcher = require('./watcher').Watcher
 
 function Compiler(el, vm) {
-  this.$data = vm.$data
   this.$methods = vm.$methods
   this.$vue = vm
   this.init(el)
@@ -10,7 +9,7 @@ function Compiler(el, vm) {
 Compiler.prototype = {
   init: function(el) {
     const $el = this.isElementNode(el) ? el : document.querySelector(el)
-    const dom = this.node2Fragment($el, this.$data)
+    const dom = this.node2Fragment($el)
     $el.appendChild(dom)
   },
   node2Fragment: function(el) {
@@ -18,7 +17,7 @@ Compiler.prototype = {
       let child
       // 将原生节点拷贝到fragment
       while (child = el.firstChild) {
-          this.compile(child, this.$data)
+          this.compile(child)
           fragment.appendChild(child)
       }
       return fragment
@@ -48,8 +47,8 @@ Compiler.prototype = {
       let name = RegExp.$1
       name = name.trim()
       //将data的值赋给该node
-      el.nodeValue = this.$data[name]
-      new Watcher(this.$data, el, name)
+      el.nodeValue = this.$vue[name]
+      new Watcher(this.$vue, el, name)
     }
   },
   compileUtils: function(el, attr) {
@@ -58,13 +57,12 @@ Compiler.prototype = {
       'v-model': function(el, name, value) {
         el.addEventListener('input', function (e) {
           //给对应的data属性赋值，并触发该属性的set函数
-          self.$data[value] = e.target.value
+          self.$vue[value] = e.target.value
         })
-        el.value = self.$data[value]
+        el.value = self.$vue[value]
       },
       '@click': function(el, name, value) {
         el.addEventListener('click', function(e) {
-          console.log(value)
           const reg = /([A-z]+)\(([A-z_,'\s0-9]*)\)|([A-z]+)/
           const result = value.match(reg)
           const methodName = result[1]
@@ -73,8 +71,6 @@ Compiler.prototype = {
             args[i] = args[i].trim().replace(/'/g, '"')
             args[i] = JSON.parse(args[i])
           }
-          console.log(args)
-          console.log(self)
           self.$methods[methodName].call(self.$vue, ...args)
         })
       }
