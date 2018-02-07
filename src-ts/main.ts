@@ -1,3 +1,3 @@
-import { Vue, Option } from './vue'
+import { Vue } from './vue'
 
 window['Vue'] = Vue

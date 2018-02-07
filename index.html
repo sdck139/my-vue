@@ -4,15 +4,34 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <script type=text/javascript src=./dist/vue.js></script>
   <title>vue demo</title>
 </head>
 <body>
   <div id="app">
-    <button @click="test('ck')">test</button>
-    <input type="text" v-model="message.a">
-    {{date}}
-    <div>{{message.a}}<span>{{message.a}}</span></div>
+    <!-- <button @click="test('ck')">test</button>
+    <input type="text" v-model="message.a"/>
+    <input type="radio" v-model="radio" value="1" name="rr">1
+    <input type="radio" v-model="radio" value="2" name="rr">2
+    <span>{{radio}}</span> -->
+    <!-- <textarea v-model="message.a" rows="4" cols="30"></textarea> -->
+    <!-- {{date}} -->
+    <!-- <div v-html="<div>sssssss</div>"></div>
+    <div>{{message.a}}<span title="ssssssss">{{message.a}}</span></div>
+    <div v-once>{{message.a}}</div>
+    <img :src="img" alt="">
+    <div id='example-3'>
+      <input type="checkbox" id="jack" value="Jack" v-model="checkedNames">
+      <label for="jack">Jack</label>
+      <input type="checkbox" id="john" value="John" v-model="checkedNames">
+      <label for="john">John</label>
+      <input type="checkbox" id="mike" value="Mike" v-model="checkedNames">
+      <label for="mike">Mike</label>
+      <br>
+      <span>Checked names: {{ checkedNames }}</span>
+    </div> -->
+    <label for="input" class="a b" :class="{'test': classEnable}">Jack</label>
+    <input type="text" class="a b" id="input" v-model="message.a"/>
+    <p>{{info}}</p>
   </div>
 </body>
 <script>
@@ -22,17 +41,38 @@
         message: {
           a: 'hello'
         },
-        date: new Date().toLocaleString()
+        radio: '3',
+        img: 'https://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTJFbTIJQJd4H363TnkzEEFWcs5jkqQAo5TVIZuqJPU7EaqpgPKZ4woibwzLhFehpKibgicXqGCsQFLyA/0',
+        b: '666',
+        date: new Date().toLocaleString(),
+        checkedNames: [],
+        info: 'yes',
+        classEnable: 1
       },
       methods: {
         test(arg1) {
           window.alert(this.message.a + arg1)
           console.log(this)
         }
+      },
+      mounted() {
+        // setInterval(() => {
+        //   this.date = new Date().toLocaleString()
+        // }, 1000)
+      },
+      watch: {
+        radio: function() {
+          alert('ssssss')
+        },
+        'message.a': function() {
+          this.info = '正在检测中.......'
+          const self = this
+          console.log(this)
+          setTimeout(() => {
+            self.info = 'yes'
+          }, 2000)
+        }
       }
     })
-    setInterval(() => {
-      vm.$data.date = new Date().toLocaleString()
-    }, 1000)
   </script>
 </html>
